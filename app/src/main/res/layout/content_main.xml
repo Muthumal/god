@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".main.ui.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="lk.janiru.greenlocator.main.ui.MainActivity"
+    tools:showIn="@layout/app_bar_main"
+    android:id="@+id/contain">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -15,14 +16,5 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".main.ui.MainActivity" />
-
-    <ImageView
-        android:id="@+id/imgLocationPinUp"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-
-        android:src="@drawable/ios_marker" />
-
+        tools:context="lk.janiru.greenlocator.main.ui.MainActivity" />
 </RelativeLayout>

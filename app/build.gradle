@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "lk.janiru.greentrack"
+        applicationId "lk.janiru.greenlocator"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
@@ -36,7 +36,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
-    implementation 'com.google.firebase:firebase-database:16.0.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
@@ -48,15 +48,17 @@ dependencies {
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
 
+    implementation 'com.google.android.gms:play-services-base:15.0.2'
 
-    implementation 'com.google.firebase:firebase-core:16.0.8'
-
-    implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     implementation 'com.google.android.gms:play-services-maps:15.0.0'
     implementation 'com.google.android.gms:play-services-location:15.0.0'
 
-//    compile 'com.google.android.gms:play-services:11.0.0'
+
+    implementation "com.google.firebase:firebase-messaging:17.4.0"
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.8'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
 
 }
