@@ -2,9 +2,12 @@ package lk.janiru.greenlocator;
 
 import android.annotation.SuppressLint;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import lk.janiru.greenlocator.services.signin.GoogleSignInActivity;
+
+import static lk.janiru.greenlocator.services.signin.GoogleSignInActivity.allowed_emails;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +15,15 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -23,12 +35,13 @@ public class FullscreenActivity extends AppCompatActivity {
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
      */
     private static final boolean AUTO_HIDE = true;
+    DatabaseReference mRef;
 
     /**
      * If {@link #AUTO_HIDE} is set, the number of milliseconds to wait after
      * user interaction before hiding the system UI.
      */
-    private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
+    private static final int AUTO_HIDE_DELAY_MILLIS = 20;
 
     /**
      * Some older devices needs a small delay between UI widget updates
@@ -169,7 +182,9 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        new CountDownTimer(2000, 2000) {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        mRef = FirebaseDatabase.getInstance().getReference();
+        CountDownTimer countDownTimer = new CountDownTimer(2000, 2000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -180,6 +195,22 @@ public class FullscreenActivity extends AppCompatActivity {
                 startActivity(new Intent(FullscreenActivity.this, GoogleSignInActivity.class));
                 finish();
             }
-        }.start();
+        };
+        mRef.child("NSBM").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                allowed_emails = (ArrayList<String>) dataSnapshot.getValue();
+                System.out.println(allowed_emails.toString());
+                startActivity(new Intent(FullscreenActivity.this, GoogleSignInActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(FullscreenActivity.this,"Makesure you have connected to the internet",Toast.LENGTH_SHORT).show();
+                countDownTimer.start();
+            }
+        });
+
     }
 }

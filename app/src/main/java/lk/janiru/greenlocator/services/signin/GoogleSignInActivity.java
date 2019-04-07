@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -26,7 +27,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import lk.janiru.greenlocator.BaseActivity;
@@ -43,6 +51,8 @@ public class GoogleSignInActivity extends BaseActivity implements
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
 
+
+
     // [START declare_auth]
     public static FirebaseAuth mAuth;
     // [END declare_auth]
@@ -50,11 +60,13 @@ public class GoogleSignInActivity extends BaseActivity implements
     public static GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
+    public static ArrayList<String> allowed_emails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(lk.janiru.greenlocator.R.layout.activity_google);
+
 
         // Views
         mStatusTextView = findViewById(lk.janiru.greenlocator.R.id.status);
@@ -111,6 +123,7 @@ public class GoogleSignInActivity extends BaseActivity implements
                 firebaseAuthWithGoogle(account);
 
                 MainActivity.FIREBASE_USER = mAuth.getCurrentUser();
+
 //                startActivity(new Intent(this,MainActivity.class));
 //                finish();
             } catch (ApiException e) {
@@ -140,6 +153,12 @@ public class GoogleSignInActivity extends BaseActivity implements
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if(!allowed_emails.contains(user.getEmail())){
+                                Toast.makeText(GoogleSignInActivity.this,"You don't have permission to use this app",Toast.LENGTH_LONG).show();
+                                signOut();
+                            }else {
+                                MainActivity.FIREBASE_USER = user;
+                            }
                             updateUI(user);
                             startActivity(new Intent(GoogleSignInActivity.this,MainActivity.class));
                             finish();

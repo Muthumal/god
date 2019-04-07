@@ -368,10 +368,11 @@ public class MainActivity extends AppCompatActivity
         // its value in mMarkers, which contains all the markers
         // for locations received, so that we can build the
         // boundaries required to show them all on the map at once
-        if(FIREBASE_USER==null)return;
+        String type = dataSnapshot.getKey();
+
+        if(FIREBASE_USER==null |type.equals("NSBM"))return;
 
         HashMap<String, HashMap<String,String>> value = (HashMap<String, HashMap<String,String>>) dataSnapshot.getValue();
-        String type = dataSnapshot.getKey();
         boolean isDriver = type.equals("Driver");
         for (HashMap<String,String> s : value.values()) {
             if(isDriver & !s.get("userId").equals(FIREBASE_USER.getUid()))continue;
