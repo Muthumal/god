@@ -4,16 +4,17 @@
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/img"
+    android:background="@drawable/withoutbutton"
     android:orientation="vertical"
-    android:weightSum="4"
+    android:weightSum="1"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="0.7"
         android:gravity="center_horizontal"
+        android:visibility="invisible"
         android:orientation="vertical">
 
 
@@ -44,7 +45,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="0.3">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/signInButton"
